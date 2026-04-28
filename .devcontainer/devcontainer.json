@@ -1,0 +1,79 @@
+{
+  "service": "workspace",
+  "dockerComposeFile": "../compose.yaml",
+  "workspaceFolder": "/workspace",
+  "updateContentCommand": "/updateContentCommand.sh",
+  "postStartCommand": "/postStartCommand.sh",
+  "waitFor": "postStartCommand",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mhutchie.git-graph",
+        "Gruntfuggly.todo-tree",
+        "shardulm94.trailing-spaces",
+        "openai.chatgpt",
+        "biomejs.biome"
+      ],
+      "settings": {
+        "[yaml]": {
+          "editor.tabSize": 2
+        },
+        "[json]": {
+          "editor.tabSize": 2
+        },
+        "[jsonc]": {
+          "editor.tabSize": 2
+        },
+        "[javascript]": {
+          "editor.tabSize": 2,
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "biomejs.biome",
+          "editor.codeActionsOnSave": {
+            "source.fixAll.biome": "explicit",
+            "source.organizeImports.biome": "explicit",
+            "source.action.useSortedAttributes.biome": "explicit",
+            "source.action.useSortedKeys.biome": "explicit"
+          }
+        },
+        "[javascriptreact]": {
+          "editor.tabSize": 2,
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "biomejs.biome",
+          "editor.codeActionsOnSave": {
+            "source.fixAll.biome": "explicit",
+            "source.organizeImports.biome": "explicit",
+            "source.action.useSortedAttributes.biome": "explicit",
+            "source.action.useSortedKeys.biome": "explicit"
+          }
+        },
+        "[typescript]": {
+          "editor.tabSize": 2,
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "biomejs.biome",
+          "editor.codeActionsOnSave": {
+            "source.fixAll.biome": "explicit",
+            "source.organizeImports.biome": "explicit",
+            "source.action.useSortedAttributes.biome": "explicit",
+            "source.action.useSortedKeys.biome": "explicit"
+          }
+        },
+        "[typescriptreact]": {
+          "editor.tabSize": 2,
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "biomejs.biome",
+          "editor.codeActionsOnSave": {
+            "source.fixAll.biome": "explicit",
+            "source.organizeImports.biome": "explicit",
+            "source.action.useSortedAttributes.biome": "explicit",
+            "source.action.useSortedKeys.biome": "explicit"
+          }
+        },
+        "[html]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "biomejs.biome"
+        },
+        "terminal.integrated.scrollback": 50000
+      }
+    }
+  }
+}

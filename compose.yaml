@@ -5,10 +5,46 @@ services:
       dockerfile: ./.devcontainer/Dockerfile
     volumes:
       - ./:/workspace
+      - ~/.aws:/aws_settings
       - /var/run/docker.sock:/var/run/docker.sock
+      - terragrunt_cache:/root/.terragrunt-cache
       - mise_data:/root/.local/share/mise
       - mise_bin:/root/.local/bin
-    tty: true
+    environment:
+      - TG_STRICT_MODE=true
+      - TG_DEPENDENCY_FETCH_OUTPUT_FROM_STATE=true
+      - TG_PROVIDER_CACHE=1
+      - TG_PROVIDER_CACHE_DIR=/root/.terragrunt-cache/providers
+      - TG_DOWNLOAD_DIR=/root/.terragrunt-cache/downloads
+      - MISE_TRUSTED_CONFIG_PATHS=/workspace
+      - MISE_PIN=1
+      - IS_SANDBOX=1
+  postgresql:
+    image: postgres:15.17
+    container_name: postgresql
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+      TZ: "Asia/Tokyo"
+  pgadmin:
+    image: dpage/pgadmin4:9.14.0
+    container_name: pgadmin
+    ports:
+      - 4040:80
+    volumes:
+      - ./docker/pgadmin/config/servers.json:/pgadmin4/servers.json
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dummy@dummy.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    depends_on:
+      - postgresql
 volumes:
+  terragrunt_cache:
+  terraform_cache:
   mise_data:
   mise_bin:

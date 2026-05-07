@@ -1,22 +1,31 @@
 {
-  "service": "workspace",
-  "dockerComposeFile": "../compose.yaml",
-  "workspaceFolder": "/workspace",
-  "updateContentCommand": "/updateContentCommand.sh",
-  "postStartCommand": "/postStartCommand.sh",
-  "waitFor": "postStartCommand",
   "customizations": {
     "vscode": {
       "extensions": [
+        // ユーティリティ
         "mhutchie.git-graph",
+        "zoma.vscode-auto-open-workspace",
+        "ms-azuretools.vscode-containers",
+        "usernamehw.errorlens",
         "Gruntfuggly.todo-tree",
         "shardulm94.trailing-spaces",
-        "openai.chatgpt",
-        "biomejs.biome"
+        // 言語対応：その他言語
+        "DavidAnson.vscode-markdownlint",
+        "be5invis.toml",
+        "bigbug.vscode-language-jsonata",
+        // 言語対応：python関係
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "charliermarsh.ruff",
+        // 言語対応：HCL関係
+        "HashiCorp.terraform",
+        "hashicorp.hcl",
+        "fredwangwang.vscode-hcl-format"
       ],
       "settings": {
-        "[yaml]": {
-          "editor.tabSize": 2
+        "[hcl]": {
+          "editor.defaultFormatter": "fredwangwang.vscode-hcl-format",
+          "editor.formatOnSave": true
         },
         "[json]": {
           "editor.tabSize": 2
@@ -24,56 +33,96 @@
         "[jsonc]": {
           "editor.tabSize": 2
         },
-        "[javascript]": {
+        "[markdown]": {
+          "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+          "editor.formatOnSave": true,
           "editor.tabSize": 2,
-          "editor.formatOnSave": true,
-          "editor.defaultFormatter": "biomejs.biome",
+          "editor.wordWrap": "on"
+        },
+        "[python]": {
           "editor.codeActionsOnSave": {
-            "source.fixAll.biome": "explicit",
-            "source.organizeImports.biome": "explicit",
-            "source.action.useSortedAttributes.biome": "explicit",
-            "source.action.useSortedKeys.biome": "explicit"
-          }
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+          },
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
         },
-        "[javascriptreact]": {
-          "editor.tabSize": 2,
-          "editor.formatOnSave": true,
-          "editor.defaultFormatter": "biomejs.biome",
-          "editor.codeActionsOnSave": {
-            "source.fixAll.biome": "explicit",
-            "source.organizeImports.biome": "explicit",
-            "source.action.useSortedAttributes.biome": "explicit",
-            "source.action.useSortedKeys.biome": "explicit"
-          }
+        "[terraform]": {
+          "editor.defaultFormatter": "hashicorp.terraform",
+          "editor.formatOnSave": true
         },
-        "[typescript]": {
-          "editor.tabSize": 2,
-          "editor.formatOnSave": true,
-          "editor.defaultFormatter": "biomejs.biome",
-          "editor.codeActionsOnSave": {
-            "source.fixAll.biome": "explicit",
-            "source.organizeImports.biome": "explicit",
-            "source.action.useSortedAttributes.biome": "explicit",
-            "source.action.useSortedKeys.biome": "explicit"
-          }
+        // tsvファイルはタブ区切り入力にする必要があるので設定
+        "[tsv]": {
+          "editor.insertSpaces": false,
+          "editor.tabSize": 4
         },
-        "[typescriptreact]": {
-          "editor.tabSize": 2,
-          "editor.formatOnSave": true,
-          "editor.defaultFormatter": "biomejs.biome",
-          "editor.codeActionsOnSave": {
-            "source.fixAll.biome": "explicit",
-            "source.organizeImports.biome": "explicit",
-            "source.action.useSortedAttributes.biome": "explicit",
-            "source.action.useSortedKeys.biome": "explicit"
-          }
+        "[yaml]": {
+          "editor.tabSize": 2
         },
-        "[html]": {
-          "editor.formatOnSave": true,
-          "editor.defaultFormatter": "biomejs.biome"
+        "autoOpenWorkspace.enableAutoOpenAlwaysFirst": true,
+        // ルール一覧: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+        "markdownlint.config": {
+          // MD014: 出力を表示せずにコマンドの前に使用されるドル記号
+          "MD014": false,
+          // MD024: 同じ内容の複数の見出し
+          "MD024": false,
+          // MD025: 同一文書内の複数トップレベル見出し
+          "MD025": false,
+          // MD026: 見出しの末尾の句読点
+          "MD026": false,
+          // MD033: インラインHTML(brは許容)
+          "MD033": {
+            "allowed_elements": [
+              "br"
+            ]
+          },
+          // MD036: 見出しの代わりに使用される強調
+          "MD036": false,
+          // MD040: フェンスで囲まれたコード・ブロックは、言語を指定しなければならない
+          "MD040": false
         },
-        "terminal.integrated.scrollback": 50000
+        "notebook.codeActionsOnSave": {
+          "notebook.source.fixAll": "explicit",
+          "notebook.source.organizeImports": "explicit"
+        },
+        "notebook.formatOnSave.enabled": true,
+        "python.terminal.activateEnvironment": false,
+        // pytest設定
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        "terminal.integrated.scrollback": 50000,
+        "terraform.validation.enableEnhancedValidation": true
       }
     }
-  }
+  },
+  "dockerComposeFile": "../compose.yaml",
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "noVncVersion": "1.6.0",
+      "password": "noPassword",
+      "version": "latest",
+      "vncPort": "5901",
+      "webPort": "6080"
+    }
+  },
+  "forwardPorts": [
+    6080,
+    5901
+  ],
+  "hostRequirements": {
+    "cpus": 4
+  },
+  "portsAttributes": {
+    "5901": {
+      "label": "vnc"
+    },
+    "6080": {
+      "label": "web"
+    }
+  },
+  "postStartCommand": "/postStartCommand.sh",
+  "service": "workspace",
+  "updateContentCommand": "/updateContentCommand.sh",
+  "waitFor": "postStartCommand",
+  "workspaceFolder": "/workspace"
 }
